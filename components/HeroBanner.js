@@ -1,5 +1,4 @@
 import Image from "next/image";
-import Link from "next/link";
 
 export default function HeroBanner() {
   return (
@@ -14,21 +13,6 @@ export default function HeroBanner() {
             sizes="100vw"
             className="object-cover"
           />
-          <div className="relative z-10 max-w-lg rounded-2xl bg-white/70 p-6 backdrop-blur-sm sm:p-8">
-            <p className="text-sm font-semibold text-wood-600">2026 AUTUMN COLLECTION</p>
-            <h1 className="mt-2 text-2xl font-bold leading-snug text-wood-900 sm:text-3xl">
-              가을, 집을 새로 채우는 시간
-            </h1>
-            <p className="mt-3 text-sm text-wood-600 sm:text-base">
-              신상 가구 컬렉션 최대 30% 할인. 오늘만 무료배송.
-            </p>
-            <Link
-              href="/products"
-              className="mt-6 inline-flex items-center rounded-full bg-wood-800 px-6 py-3 text-sm font-semibold text-white transition hover:bg-wood-900"
-            >
-              전체 상품 보러가기
-            </Link>
-          </div>
         </div>
       </div>
     </section>
