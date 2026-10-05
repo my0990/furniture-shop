@@ -1,9 +1,15 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    // 목업 이미지는 public/ 폴더의 로컬 파일만 사용하므로 별도 remotePatterns 설정은 필요 없음.
-    // 실제 서비스에서 외부 이미지 CDN(예: S3, Cloudinary)을 쓰게 되면 여기에 도메인을 추가하세요.
-    // remotePatterns: [{ protocol: 'https', hostname: 'your-cdn.com' }],
+    // 상품/카테고리 이미지는 Cloudflare R2 Public Development URL(*.r2.dev)에서 제공돼요.
+    // 커스텀 도메인을 연결했다면 그 도메인도 여기에 추가해주세요.
+    remotePatterns: [{ protocol: "https", hostname: "*.r2.dev" }],
+  },
+  experimental: {
+    serverActions: {
+      // 상품 이미지 업로드를 위해 기본 1MB 제한을 늘려요.
+      bodySizeLimit: "10mb",
+    },
   },
 };
 
