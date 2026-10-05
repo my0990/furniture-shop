@@ -38,6 +38,12 @@ public/images/       플레이스홀더 상품 이미지 (Pillow로 생성한 �
 scripts/gen-images.py    플레이스홀더 이미지 재생성 스크립트 (선택)
 ```
 
+## 비공개 매장 입장 코드
+
+이 사이트는 아무나 못 들어오게, 처음 접속 시 입장 코드를 입력해야 하는 화면(`/enter`)이 떠요. `middleware.js`가 쿠키를 확인해서, 코드를 맞게 입력하지 않으면 어떤 페이지에도 못 들어가게 막아요.
+
+코드는 `.env.local` 파일의 `SITE_ACCESS_CODE`에 설정되어 있고, 이 값을 바꾸면 새 코드로 바로 적용돼요(재배포 필요). Vercel에 배포할 때는 프로젝트 Settings → Environment Variables에서 `SITE_ACCESS_CODE`와 `SITE_ACCESS_TOKEN` 두 값을 로컬 `.env.local`과 동일하게 등록해줘야 실제 배포 사이트에서도 작동해요. `SITE_ACCESS_TOKEN`은 사람이 입력하는 코드가 아니라 쿠키에 저장되는 내부용 비밀 값이라, 노출되지 않게 주의하세요.
+
 ## 실제 서비스로 발전시키려면
 
 - `data/products.js`의 목업 데이터를 실제 DB(Supabase, PlanetScale 등)나 헤드리스 커머스 API로 교체

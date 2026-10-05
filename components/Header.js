@@ -3,13 +3,17 @@
 import Link from "next/link";
 import { useState } from "react";
 import { usePathname } from "next/navigation";
-import { categories } from "@/data/categories";
 import { useCart } from "@/context/CartContext";
 
-export default function Header() {
+export default function Header({ categories }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const pathname = usePathname();
   const { totalCount } = useCart();
+
+  // 입장 코드 화면(/enter)과 관리자 화면(/admin)에서는 쇼핑몰 헤더를 보여주지 않음
+  if (pathname === "/enter" || pathname.startsWith("/admin")) {
+    return null;
+  }
 
   const navLinks = [
     { href: "/", label: "홈" },
