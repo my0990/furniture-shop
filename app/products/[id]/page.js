@@ -5,6 +5,7 @@ import { getCategoryBySlug } from "@/data/categories";
 import { formatPrice, getProductById, getProductsByCategory } from "@/data/products";
 import AddToCartForm from "@/components/AddToCartForm";
 import ProductSection from "@/components/ProductSection";
+import DetailBlocks from "@/components/DetailBlocks";
 
 export const dynamic = "force-dynamic";
 
@@ -83,27 +84,13 @@ export default async function ProductDetailPage({ params }) {
 
           <p className="mt-5 text-sm leading-relaxed text-wood-600">{product.description}</p>
 
-          {product.colors?.length > 0 && (
-            <div className="mt-5">
-              <p className="text-sm font-medium text-wood-700">색상</p>
-              <div className="mt-2 flex flex-wrap gap-2">
-                {product.colors.map((color) => (
-                  <span
-                    key={color}
-                    className="rounded-full border border-wood-200 px-3 py-1 text-xs text-wood-600"
-                  >
-                    {color}
-                  </span>
-                ))}
-              </div>
-            </div>
-          )}
-
           <div className="mt-6">
             <AddToCartForm product={product} />
           </div>
         </div>
       </div>
+
+      <DetailBlocks blocks={product.detailBlocks} />
 
       {related.length > 0 && (
         <div className="mt-4">

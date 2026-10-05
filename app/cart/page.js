@@ -36,8 +36,8 @@ export default function CartPage() {
 
       <div className="mt-8 grid grid-cols-1 gap-10 lg:grid-cols-[1fr_320px]">
         <ul className="divide-y divide-wood-100">
-          {items.map(({ product, quantity }) => (
-            <li key={product.id} className="flex gap-4 py-6">
+          {items.map(({ lineId, product, quantity, unitPrice, selectedOptions }) => (
+            <li key={lineId} className="flex gap-4 py-6">
               <Link
                 href={`/products/${product.id}`}
                 className="relative h-24 w-24 flex-shrink-0 overflow-hidden rounded-xl bg-wood-50 sm:h-28 sm:w-28"
@@ -54,11 +54,18 @@ export default function CartPage() {
                     >
                       {product.name}
                     </Link>
-                    <p className="mt-1 text-sm text-wood-500">{formatPrice(product.price)}</p>
+                    {selectedOptions?.length > 0 && (
+                      <p className="mt-1 text-xs text-wood-400">
+                        {selectedOptions
+                          .map((o) => `${o.groupName}: ${o.choiceLabel}`)
+                          .join(" · ")}
+                      </p>
+                    )}
+                    <p className="mt-1 text-sm text-wood-500">{formatPrice(unitPrice)}</p>
                   </div>
                   <button
                     type="button"
-                    onClick={() => removeItem(product.id)}
+                    onClick={() => removeItem(lineId)}
                     className="text-xs text-wood-400 hover:text-wood-700"
                     aria-label="상품 삭제"
                   >
@@ -69,10 +76,10 @@ export default function CartPage() {
                 <div className="mt-3 flex items-center justify-between">
                   <QuantityInput
                     value={quantity}
-                    onChange={(q) => updateQuantity(product.id, q)}
+                    onChange={(q) => updateQuantity(lineId, q)}
                   />
                   <span className="text-sm font-semibold text-wood-900">
-                    {formatPrice(product.price * quantity)}
+                    {formatPrice(unitPrice * quantity)}
                   </span>
                 </div>
               </div>
