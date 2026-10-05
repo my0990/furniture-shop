@@ -1,30 +1,43 @@
-export const categories = [
-  {
-    slug: "living",
-    name: "거실",
-    description: "소파, 거실장, 테이블 등 리빙 가구",
-    image: "/images/categories/living.jpg",
-  },
-  {
-    slug: "bedroom",
-    name: "침실",
-    description: "침대, 매트리스, 옷장으로 완성하는 침실",
-    image: "/images/categories/bedroom.jpg",
-  },
-  {
-    slug: "kitchen",
-    name: "주방/다이닝",
-    description: "다이닝테이블, 식탁의자, 주방 수납",
-    image: "/images/categories/kitchen.jpg",
-  },
-  {
-    slug: "office",
-    name: "홈오피스",
-    description: "책상, 의자, 책장으로 꾸미는 작업 공간",
-    image: "/images/categories/office.jpg",
-  },
-];
+import { sql } from "@/lib/db";
 
-export function getCategoryBySlug(slug) {
-  return categories.find((c) => c.slug === slug);
+function rowToCategory(row) {
+  return {
+    slug: row.slug,
+    name: row.name,
+    description: row.description,
+    image: row.image,
+    sortOrder: row.sort_order,
+  };
+}
+
+export async function getAllCategories() {
+  const rows = await sql("SELECT * FROM categories ORDER BY sort_order ASC");
+  return rows.map(rowToCategory);
+}
+
+export async function getCategoryBySlug(slug) {
+  const rows = await sql("SELECT * FROM categories WHERE slug = $1", [slug]);
+  return rows[0] ? rowToCategory(rows[0]) : null;
+}
+
+export async function createCategory(input) {
+  const { slug, name, description, image, sortOrder } = input;
+  await sql(
+    `INSERT INTO categories (slug, name, description, image, sort_order)
+     VALUES ($1, $2, $3, $4, $5)`,
+    [slug, name, description, image, sortOrder]
+  );
+}
+
+export async function updateCategory(slug, input) {
+  const { name, description, image, sortOrder } = input;
+  await sql(
+    `UPDATE categories SET name = $2, description = $3, image = $4, sort_order = $5
+     WHERE slug = $1`,
+    [slug, name, description, image, sortOrder]
+  );
+}
+
+export async function deleteCategory(slug) {
+  await sql("DELETE FROM categories WHERE slug = $1", [slug]);
 }

@@ -3,9 +3,13 @@ import CategoryNav from "@/components/CategoryNav";
 import ProductSection from "@/components/ProductSection";
 import { getBestsellers, getNewArrivals } from "@/data/products";
 
-export default function HomePage() {
-  const bestsellers = getBestsellers();
-  const newArrivals = getNewArrivals();
+export const dynamic = "force-dynamic";
+
+export default async function HomePage() {
+  const [bestsellers, newArrivals] = await Promise.all([
+    getBestsellers(),
+    getNewArrivals(),
+  ]);
 
   return (
     <>

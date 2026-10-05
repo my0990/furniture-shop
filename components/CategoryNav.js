@@ -1,8 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
-import { categories } from "@/data/categories";
+import { getAllCategories } from "@/data/categories";
 
-export default function CategoryNav() {
+export default async function CategoryNav() {
+  const categories = await getAllCategories();
+
   return (
     <section className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
       <div className="flex items-end justify-between">

@@ -2,28 +2,27 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getCategoryBySlug } from "@/data/categories";
-import { formatPrice, getProductById, getProductsByCategory, products } from "@/data/products";
+import { formatPrice, getProductById, getProductsByCategory } from "@/data/products";
 import AddToCartForm from "@/components/AddToCartForm";
 import ProductSection from "@/components/ProductSection";
 
-export function generateStaticParams() {
-  return products.map((p) => ({ id: p.id }));
-}
+export const dynamic = "force-dynamic";
 
-export function generateMetadata({ params }) {
-  const product = getProductById(params.id);
+export async function generateMetadata({ params }) {
+  const product = await getProductById(params.id);
   return { title: product ? `${product.name} | 나만의 가구` : "나만의 가구" };
 }
 
-export default function ProductDetailPage({ params }) {
-  const product = getProductById(params.id);
+export default async function ProductDetailPage({ params }) {
+  const product = await getProductById(params.id);
   if (!product) notFound();
 
-  const category = getCategoryBySlug(product.category);
+  const category = await getCategoryBySlug(product.category);
   const discountRate = product.originalPrice
     ? Math.round((1 - product.price / product.originalPrice) * 100)
     : 0;
-  const related = getProductsByCategory(product.category).filter((p) => p.id !== product.id);
+  const relatedAll = await getProductsByCategory(product.category);
+  const related = relatedAll.filter((p) => p.id !== product.id);
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:px-8">

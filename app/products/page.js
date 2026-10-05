@@ -1,7 +1,9 @@
 import Link from "next/link";
 import ProductGrid from "@/components/ProductGrid";
-import { categories } from "@/data/categories";
-import { products as allProducts } from "@/data/products";
+import { getAllCategories } from "@/data/categories";
+import { getAllProducts } from "@/data/products";
+
+export const dynamic = "force-dynamic";
 
 export const metadata = {
   title: "전체상품 | 나만의 가구",
@@ -35,9 +37,14 @@ function sortProducts(products, sort) {
   }
 }
 
-export default function ProductsPage({ searchParams }) {
+export default async function ProductsPage({ searchParams }) {
   const categoryFilter = searchParams?.category;
   const sort = searchParams?.sort || "default";
+
+  const [categories, allProducts] = await Promise.all([
+    getAllCategories(),
+    getAllProducts(),
+  ]);
 
   const filtered = categoryFilter
     ? allProducts.filter((p) => p.category === categoryFilter)
